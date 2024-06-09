@@ -27,22 +27,6 @@ export const search = async (req, res) => {
       const carData = JSON.parse(body);
       const carDescriptions = []
 
-      //console.log(carData)
-
-      /**
-       *  const prompt = {
-        prompt: `I will provide you a JSON OBJECT for a car. Take this and create a description value which describes the car based on all other values. Make sure to include all other values in the description while keeping the description string as descriptive yet short as possible. Here is the car object: ${JSON.stringify(carData)}`,
-        max_tokens: 150
-      };
-       */
-     
-
-      //const prompt2 = "I will provide you a JSON OBJECT for a car. Take this and create a description value which describes the car based on all other values. Make sure to include all other values in the description while keeping the description string as descriptive yet short as possible. Here is the car object:"
-
-      
-     //console.log(text);
-      
-      
       try {
 
         const descriptions = [];
@@ -69,11 +53,11 @@ export const search = async (req, res) => {
 
         console.log("Request sent sucessfully to python service")
         // Process the response from the Python service
-        const embeddings = pythonResponse.data.embeddings;
+        //const embeddings = pythonResponse.data.embeddings;
 
-        console.log(embeddings.shape)
+        //console.log(embeddings.shape)
         // Return the embeddings as part of the response
-        res.json({ carData, embeddings });
+        res.json("End of /embed endpoint. Goodbye!");
 
       } catch (pythonError) {
         console.error('Error communicating with Python service:', pythonError);
