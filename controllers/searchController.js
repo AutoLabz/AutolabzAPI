@@ -25,8 +25,9 @@ export const search = async (req, res) => {
 
       // Assume body is a JSON string and parse it
       const carData = JSON.parse(body);
+      const carDescriptions = []
 
-      console.log(carData)
+      //console.log(carData)
 
       /**
        *  const prompt = {
@@ -36,24 +37,35 @@ export const search = async (req, res) => {
        */
      
 
-      const prompt2 = "I will provide you a JSON OBJECT for a car. Take this and create a description value which describes the car based on all other values. Make sure to include all other values in the description while keeping the description string as descriptive yet short as possible. Here is the car object:"
+      //const prompt2 = "I will provide you a JSON OBJECT for a car. Take this and create a description value which describes the car based on all other values. Make sure to include all other values in the description while keeping the description string as descriptive yet short as possible. Here is the car object:"
 
-      const result = await model.generateContent(prompt2);
-      console.log(result)
-      const geminiresponse = result.response;
-      const description = geminiresponse.text();
+      
      //console.log(text);
       
       
       try {
 
+        const descriptions = [];
+        // Iterate through carData and construct prompts
+        for (const car of carData) {
+          const prompt = `I will provide you a JSON OBJECT for a car. Take this and create a description value which describes the car based on all other values. Make sure to include all other values in the description while keeping the description string as descriptive yet short as possible. Here is the car object: ${JSON.stringify(car)}`;
+          
+          const result = await model.generateContent(prompt);
+          //console.log(result)
+          const geminiresponse = result.response;
+          const description = geminiresponse.text();
+          //console.log(description);
+          car.description = description;
+          carDescriptions.push(car.description)
+          //console.log(car)
+        }
         
         console.log("ABOUT TO SEND REQUEST TO EMBEDDING SERVICE")
         //console.log(result.response.text());
 
 
         // Send request to the Python service to get embeddings
-        const pythonResponse = await axios.post('http://localhost:5005/embed', { car_data: carData });
+        const pythonResponse = await axios.post('http://localhost:5005/embed', { car_data: carDescriptions });
 
         console.log("Request sent sucessfully to python service")
         // Process the response from the Python service
