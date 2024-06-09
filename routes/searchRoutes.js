@@ -5,6 +5,6 @@ import validateQuery from '../middleware/validateQuery.js';
 
 const router = express.Router();
 
-router.post('/search', validateQuery, search);
+router.get('/', search);
 
 export default router;
