@@ -57,6 +57,7 @@ export const search = async (req, res) => {
           } else {
             const carData = JSON.parse(body);
             if (Array.isArray(carData)) {
+              //ADD JSON for car data
               carData.forEach(car => allCarData.push(car));
             } else {
               allCarData.push(carData); // Push directly if carData is not an array
@@ -102,7 +103,16 @@ export const search = async (req, res) => {
       console.log("ABOUT TO SEND REQUEST TO EMBEDDING SERVICE");
 
       // Send car descriptions to the Python service for embedding
-      const pythonResponse = await axios.post('http://localhost:5005/embed', { car_data: carDescriptions });
+      const pythonResponse = await axios.post('http://localhost:5005/embedDescriptions', { car_data: carDescriptions });
+      console.log(pythonResponse)
+
+      //Map each car object in the allCarData array with its associated sparse-dense vector embedding vectorID
+      for(let i = 0; i < allCarData.length; i++){
+        allCarData[i].vectorID = pythonResponse[i];
+      }
+     
+      
+      
 
       console.log("Request sent successfully to python service");
 
