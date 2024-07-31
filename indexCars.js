@@ -1,15 +1,16 @@
 // indexCars.js
 import { Client } from '@elastic/elasticsearch';
 import cars from './carData.js';
+import 'dotenv/config';
 
 const client = new Client({
-  node: 'https://localhost:9200',
+  node: process.env.ELASTICSEARCH_NODE,
   auth: {
-    username: 'elastic',
-    password: 'Z3HRiTPiIHJnGqA3Wh9G'
+    username: process.env.ELASTICSEARCH_USERNAME,
+    password: process.env.ELASTICSEARCH_PASSWORD
   },
   ssl: {
-    ca: '/Users/saurabhkhanal/downloads/elasticsearch-8.13.4/config/certs/http_ca.crt',
+    ca: process.env.ELASTICSEARCH_CA,
     rejectUnauthorized: false
   }
 });
